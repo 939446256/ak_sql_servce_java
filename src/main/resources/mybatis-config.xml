@@ -1,0 +1,3 @@
+<typeHandlers>
+    <typeHandler handler="com.example.demo.config.TimestampTypeHandler"/>
+</typeHandlers>

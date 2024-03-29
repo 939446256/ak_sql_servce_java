@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.ak.akSQL.mapper.BaseSQLMapper">
+
+    <resultMap id="queryForListMap" type="com.example.demo.ak.akSQL.dto.QuerySqlDTO">
+    </resultMap>
+
+    <insert id="insertTable" useGeneratedKeys="true"  keyProperty="id">
+        insert ${example.tableName} SET ${example.sql}
+    </insert>
+
+    <update id="updateTable" useGeneratedKeys="true"  keyProperty="id">
+        update ${example.tableName} SET ${example.updateSQL} where ${example.whereSQL}
+    </update>
+
+    <select id="queryForPageCount" resultType="int" >
+        select count(1) from (
+        SELECT
+        ${params.model.selectSql}
+        FROM
+        ${params.model.tableSql}
+        <where>
+            ${params.model.whereSQL}
+        </where>
+        ${params.model.addSql}
+        ) tb
+    </select>
+
+    <select id="queryForPageList" resultType="map" >
+        SELECT
+            ${params.model.selectSql}
+        FROM
+            ${params.model.tableSql}
+        <where>
+            ${params.model.whereSQL}
+        </where>
+            ${params.model.addSql}
+        ORDER BY #{params.sort} #{params.order}
+        LIMIT ${page.offset},${page.size}
+    </select>
+
+
+    <select id="queryForPageList2" resultType="map" >
+        SELECT
+            ${params.selectSql}
+        FROM
+            ${params.tableSql}
+        <where>
+            ${params.whereSQL}
+        </where>
+            ${params.addSql}
+         ${page.order}
+        LIMIT ${page.offset}, ${page.size}
+    </select>
+
+    <select id="queryForPageCollectionList" resultMap="queryForListMap" >
+        SELECT
+        ${params.model.selectSql}
+        FROM
+        ${params.model.tableSql}
+        <where>
+            ${params.model.whereSQL}
+        </where>
+        ${params.model.addSql}
+    </select>
+
+
+    <select id="queryForList" resultType="map" >
+        SELECT
+            ${querySqlDto.selectSql}
+        FROM
+            ${querySqlDto.tableSql}
+        <where>
+            ${querySqlDto.whereSQL}
+        </where>
+            ${querySqlDto.addSql}
+    </select>
+
+
+    <select id="queryForCollectionList" resultMap="queryForListMap" >
+        SELECT
+        ${querySqlDto.selectSql}
+        FROM
+        ${querySqlDto.tableSql}
+        <where>
+            ${querySqlDto.whereSQL}
+        </where>
+        ${querySqlDto.addSql}
+    </select>
+
+    <update id="batchUpdate" >
+        update ${example.tableName} SET ${example.updateSQL}
+        where id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="batchSoftDelete" parameterType="java.util.List">
+        UPDATE ${table} SET deleted = true
+        where id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <delete id="deleteFromTable">
+        delete from ${table}
+        where ${whereSQL}
+    </delete>
+
+
+    <select id="getCount" resultType="int" >
+        SELECT
+         COUNT(1)
+        FROM
+        ${querySqlDto.tableSql}
+        <where>
+            ${querySqlDto.whereSQL}
+        </where>
+        ${querySqlDto.addSql}
+    </select>
+
+    <select id="executeColumnWork" resultType="java.lang.Integer">
+        CALL Pro_Temp_ColumnWork(#{table}, #{column}, #{command}, #{type});;;
+    </select>
+
+    <select id="showTable" resultType="java.lang.String">
+        SHOW TABLES
+    </select>
+
+    <select id="getTableCommit" resultType="java.lang.String">
+        SELECT
+            TABLE_COMMENT
+        FROM
+            INFORMATION_SCHEMA.TABLES
+        WHERE
+            TABLE_NAME = #{tableName}
+            LIMIT 1
+    </select>
+
+    <select id="getAllFieldsForTables" resultType="map">
+        SELECT
+            COLUMN_NAME as Field,
+            COLUMN_COMMENT,
+            DATA_TYPE as Type
+        FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = "wuyang_1" AND TABLE_NAME = #{table}
+    </select>
+</mapper>
