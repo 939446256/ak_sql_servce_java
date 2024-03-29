@@ -1,11 +1,16 @@
 ## 1.项目简介
 ### 1.1项目启动
+**功能1 无需部署,即时更新<br/>**
+**功能2 提供丰富的字段标签<br/>**
+**功能3 提供低代码SQL和可视化SQL接口<br/>**
+
+### 1.2项目启动
 **1.启动后端JAVA项目 <a href="https://github.com/939446256/ak_sql_servce_java">ak_sql_servce_java</a> 语言:JAVA<br/>**
 **2.启动前端Vue3项目 ak_sql_servce_web 框架:Vue3**<br/>
 **3.启动中台nestjs项目 ak_sql_servce_nodejs 环境:nodejs 负责业务逻辑层处理(可选)**
 
  
-### 1.2项目端口
+### 1.3项目端口
 **后端默认端口: 8810<br/>**
 **前端默认端口: 8820<br/>**
 **中台默认端口: 8830<br/>**
